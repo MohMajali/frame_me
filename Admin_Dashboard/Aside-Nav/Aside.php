@@ -39,6 +39,12 @@
       </a>
     </li>
 
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="./Contacts.php">
+        <i class="bi bi-envelope-paper"></i><span>Contacts</span>
+      </a>
+    </li>
+
 
   </ul>
 </aside>

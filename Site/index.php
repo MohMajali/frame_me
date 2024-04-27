@@ -79,9 +79,9 @@ if ($C_ID) {
 
                         <?php if ($C_ID) {?>
                         <li><a href="./logout.php">Logout</a></li>
-                        
+
                         <?php }?>
-                          
+
                       </ul>
                     </div>
                     <div class="col-md-6 extra-info">
@@ -165,43 +165,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
     </section>
     <!-- END section -->
 
-    <section class="section slider-section">
-      <div class="container">
-        <div class="row justify-content-center text-center mb-5">
-          <div class="col-md-8">
-            <h2 class="heading" data-aos="fade-up">Some of Photographers Works</h2>
-            <p class="lead" data-aos="fade-up" data-aos-delay="100">Lorem ipsum dolor sit amet, consectetur adipisicing elit. In dolor, iusto doloremque quo odio repudiandae sunt eveniet? Enim facilis laborum voluptate id porro, culpa maiores quis, blanditiis laboriosam alias. Sed.</p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="home-slider major-caousel owl-carousel mb-5" data-aos="fade-up" data-aos-delay="200">
-            <?php
-$sql1 = mysqli_query($con, "SELECT * from photographer_pictures ORDER BY id DESC");
 
-while ($row1 = mysqli_fetch_array($sql1)) {
-
-    $photo_id = $row1['id'];
-    $photo = $row1['image'];
-
-    ?>
-
-              <div id="img-<?php echo $photo_id ?>" class="slider-item">
-                <img src="../Photographer_Dashboard/<?php echo $photo ?>" alt="Image placeholder" class="img-fluid">
-              </div>
-              <?php
-}?>
-
-            </div>
-            <!-- END slider -->
-          </div>
-
-          <!-- <div class="col-md-12 text-center"><a href="#" class="">View More Photos</a></div> -->
-
-        </div>
-      </div>
-    </section>
-    <!-- END section -->
 
     <section class="section blog-post-entry bg-pattern">
       <div class="container">
@@ -236,8 +200,55 @@ while ($row1 = mysqli_fetch_array($sql1)) {
         </div>
       </div>
     </section>
+
+    <section class="section slider-section">
+      <div class="container">
+        <div class="row justify-content-center text-center mb-5">
+          <div class="col-md-8">
+            <h2 class="heading" data-aos="fade-up">Some of Photographers Works</h2>
+            <p class="lead" data-aos="fade-up" data-aos-delay="100">Lorem ipsum dolor sit amet, consectetur adipisicing elit. In dolor, iusto doloremque quo odio repudiandae sunt eveniet? Enim facilis laborum voluptate id porro, culpa maiores quis, blanditiis laboriosam alias. Sed.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="home-slider major-caousel owl-carousel mb-5" data-aos="fade-up" data-aos-delay="200">
+            <?php
+$sql1 = mysqli_query($con, "SELECT * from photographer_pictures ORDER BY id DESC");
+
+while ($row1 = mysqli_fetch_array($sql1)) {
+
+    $photo_id = $row1['id'];
+    $photo = $row1['image'];
+    $category_photo_id = $row1['category_id'];
+
+    $sql2 = mysqli_query($con, "SELECT * from categories WHERE id = '$category_photo_id'");
+    $row1 = mysqli_fetch_array($sql2);
+
+    $category_photo = $row1['category'];
+
+    ?>
+
+              <div id="img-<?php echo $photo_id ?>" class="slider-item">
+                <img src="../Photographer_Dashboard/<?php echo $photo ?>" alt="Image placeholder" class="img-fluid" height="120px">
+                <h3 class="text-center"><?php echo $category_photo ?></h3>
+              </div>
+              <?php
+}?>
+
+            </div>
+            <!-- END slider -->
+          </div>
+
+          <!-- <div class="col-md-12 text-center"><a href="#" class="">View More Photos</a></div> -->
+
+        </div>
+      </div>
+    </section>
     <!-- END section -->
-    <!-- <section class="section testimonial-section">
+
+
+    <!-- END section -->
+    <section class="section testimonial-section">
       <div class="container">
         <div class="row justify-content-center text-center mb-5">
           <div class="col-md-8">
@@ -284,7 +295,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
           </div>
         </div>
       </div>
-    </section> -->
+    </section>
 
     <?php include './Footer.php';?>
 

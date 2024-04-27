@@ -120,7 +120,7 @@ $photographer_description = $row1['description'];
     </header>
     <!-- END head -->
 
-    <section class="site-hero overlay page-inside" style="background-image: url(img/hero_2.jpg)">
+    <section class="site-hero overlay page-inside" style="background-image: url(img/photographer.jpeg)">
       <div class="container">
         <div class="row site-hero-inner justify-content-center align-items-center">
           <div class="col-md-10 text-center">

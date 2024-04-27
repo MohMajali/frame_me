@@ -11,7 +11,7 @@ if (isset($_POST['Submit'])) {
     $phone = '+962' . $_POST['phone'];
     $image = 'Photographer_Images/default_user.jpg';
     $userTypeId = $_POST['user_type_id'];
-    $price_range = $_POST['price_range'];
+    $price_range = "0.00";
     $total_rate = 0;
 
     $stmt = $con->prepare("SELECT id FROM users WHERE email = ?");
@@ -176,7 +176,7 @@ if (isset($_POST['Submit'])) {
                       </div>
 
 
-                      <div class="col-12" id="price-range">
+                      <!-- <div class="col-12" id="price-range">
                         <label for="yourPrice" class="form-label"
                           >Price Range</label
                         >
@@ -186,7 +186,7 @@ if (isset($_POST['Submit'])) {
                           class="form-control"
                           id="yourPrice"
                         />
-                      </div>
+                      </div> -->
 
 
                       <div class="col-12">
@@ -210,7 +210,12 @@ if (isset($_POST['Submit'])) {
 
                       <div class="col-12">
                         <label for="defaultSelect" class="form-label">Select Role</label>
-                        <select onchange="onChangeUserRole(event)" id="defaultSelect" name="user_type_id" class="form-select" required>
+                        <!-- <select onchange="onChangeUserRole(event)" id="defaultSelect" name="user_type_id" class="form-select" required>
+                          <option value="2">Photographer</option>
+                          <option value="3">Customer</option>
+                        </select> -->
+
+                        <select id="defaultSelect" name="user_type_id" class="form-select" required>
                           <option value="2">Photographer</option>
                           <option value="3">Customer</option>
                         </select>
@@ -266,17 +271,17 @@ if (isset($_POST['Submit'])) {
 
     <script>
 
-      const onChangeUserRole = (e) => {
+      // const onChangeUserRole = (e) => {
 
-        let priceRangeDiv = document.getElementById('price-range')
+      //   let priceRangeDiv = document.getElementById('price-range')
 
-        if(e.target.value == 3){
-          priceRangeDiv.style.display = 'none'
-        } else {
-          priceRangeDiv.style.display = 'block'
+      //   if(e.target.value == 3){
+      //     priceRangeDiv.style.display = 'none'
+      //   } else {
+      //     priceRangeDiv.style.display = 'block'
 
-        }
-      }
+      //   }
+      // }
 
     </script>
   </body>
