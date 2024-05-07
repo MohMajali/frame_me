@@ -40,6 +40,24 @@ if ($C_ID) {
 
     <!-- Theme Style -->
     <link rel="stylesheet" href="css/style.css">
+
+
+    <style>
+
+.star {
+  color: #ccc; /* Default color for stars */
+}
+
+.star:hover ~ .star {
+  color: #fad00e; /* Change color of stars when hovered */
+}
+
+.star:hover {
+  color: #fad00e; /* Change color of hovered star */
+}
+
+
+    </style>
   </head>
   <body>
 
@@ -65,6 +83,7 @@ if ($C_ID) {
                     <ul class="list-unstyled menu">
                         <li><a href="index.php">Home</a></li>
                         <li><a href="Photographers.php">Photographers</a></li>
+                        <li><a href="Categories.php">Categories</a></li>
                         <li><a href="about.php">About</a></li>
                         <?php if ($C_ID) {?>
                         <li class="active"><a href="Reservations.php">Reservations</a></li>
@@ -85,7 +104,7 @@ if ($C_ID) {
                       <div class="row">
                         <div class="col-md-6 mb-5">
                           <h3>Contact Info</h3>
-                          <p>98 West 21th Street, Suite 721 <br> New York NY 10016</p>
+                          <p>Queen Rania st <br> Amman</p>
                           <p>info@frameme.com</p>
                           <p>+962 70000 0000</p>
 
@@ -93,7 +112,7 @@ if ($C_ID) {
                         <div class="col-md-6">
                           <h3>Connect With Us</h3>
                           <ul class="list-unstyled">
-                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">X</a></li>
                             <li><a href="#">Facebook</a></li>
                             <li><a href="#">Instagram</a></li>
                           </ul>
@@ -230,7 +249,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
 
     ?></span></td>
                           <td><span class="badge bg-label-primary me-1"><?php echo $created_at ?></span></td>
-                          <td>
+                          <td dir="rtl">
                           <?php if ($status == 'Pending') {?>
 
 <a href="JavaScript:if(confirm('Are You Sure To Cancel This Resertvation ?')==true)
@@ -239,17 +258,20 @@ while ($row1 = mysqli_fetch_array($sql1)) {
 
 <?php } else if($status == 'Accepted' && !$rate_id) {?>
 
-  <a href="Rate.php?Rate=1&photographer_id=<?php echo $photographer_id; ?>&C_ID=<?php echo $C_ID; ?>" role="button"><i title="1" style="color:#fad00e" class="fa fa-star"></i></a>
-
- <a href="Rate.php?Rate=2&photographer_id=<?php echo $photographer_id; ?>&C_ID=<?php echo $C_ID; ?>" role="button"><i title="2" style="color:#fad00e" class="fa fa-star"></i></a>
-
- <a href="Rate.php?Rate=3&photographer_id=<?php echo $photographer_id; ?>&C_ID=<?php echo $C_ID; ?>" role="button"><i title="3" style="color:#fad00e" class="fa fa-star"></i></a>
-
- <a href="Rate.php?Rate=4&photographer_id=<?php echo $photographer_id; ?>&C_ID=<?php echo $C_ID; ?>" role="button"><i title="4" style="color:#fad00e" class="fa fa-star"></i></a>
-
- <a href="Rate.php?Rate=5&photographer_id=<?php echo $photographer_id; ?>&C_ID=<?php echo $C_ID; ?>" role="button"><i title="5" style="color:#fad00e" class="fa fa-star"></i></a>
 
 
+
+
+
+<a href="Rate.php?Rate=5&photographer_id=<?php echo $photographer_id; ?>&C_ID=<?php echo $C_ID; ?>" role="button" class="star"><i title="5" class="fa fa-star"></i></a>
+
+<a href="Rate.php?Rate=4&photographer_id=<?php echo $photographer_id; ?>&C_ID=<?php echo $C_ID; ?>" role="button" class="star"><i title="4" class="fa fa-star"></i></a>
+
+<a href="Rate.php?Rate=3&photographer_id=<?php echo $photographer_id; ?>&C_ID=<?php echo $C_ID; ?>" role="button" class="star"><i title="3" class="fa fa-star"></i></a>
+
+<a href="Rate.php?Rate=2&photographer_id=<?php echo $photographer_id; ?>&C_ID=<?php echo $C_ID; ?>" role="button" class="star"><i title="2" class="fa fa-star"></i></a>
+
+<a href="Rate.php?Rate=1&photographer_id=<?php echo $photographer_id; ?>&C_ID=<?php echo $C_ID; ?>" role="button" class="star"><i title="1" class="fa fa-star"></i></a>
 
 
 <?php } else { ?>

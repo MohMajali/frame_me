@@ -149,13 +149,17 @@ if (!$A_ID) {
             <div class="card">
               <div class="card-body">
                 <!-- Table with stripped rows -->
+
                 <table class="table datatable">
+
+
                   <thead>
                     <tr>
                       <th scope="col">ID</th>
                       <th scope="col">Photographer Name</th>
                       <th scope="col">Photographer Email</th>
                       <th scope="col">Photographer Phone</th>
+                      <th scope="col">Total Rate</th>
                       <th scope="col">Actions</th>
                     </tr>
                   </thead>
@@ -170,6 +174,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
     $photographer_email = $row1['email'];
     $photographer_phone = $row1['phone'];
     $request_status = $row1['request_status'];
+    $total_rate = $row1['total_rate'];
     $active = $row1['active'];
 
     ?>
@@ -178,6 +183,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
                       <td><?php echo $photographer_name ?></td>
                       <td><?php echo $photographer_email ?></td>
                       <td><?php echo $photographer_phone ?></td>
+                      <td><?php echo $total_rate ?></td>
 
 
 

@@ -67,6 +67,7 @@ if ($C_ID) {
                       <ul class="list-unstyled menu">
                         <li><a href="index.php">Home</a></li>
                         <li class="active"><a href="Photographers.php">Photographers</a></li>
+                        <li><a href="Categories.php">Categories</a></li>
                         <li><a href="about.php">About</a></li>
                         <?php if ($C_ID) {?>
                         <li><a href="Reservations.php">Reservations</a></li>
@@ -87,7 +88,7 @@ if ($C_ID) {
                       <div class="row">
                         <div class="col-md-6 mb-5">
                           <h3>Contact Info</h3>
-                          <p>98 West 21th Street, Suite 721 <br> New York NY 10016</p>
+                          <p>Queen Rania st <br> Amman</p>
                           <p>info@frameme.com</p>
                           <p>+962 70000 0000</p>
 
@@ -95,7 +96,7 @@ if ($C_ID) {
                         <div class="col-md-6">
                           <h3>Connect With Us</h3>
                           <ul class="list-unstyled">
-                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">X</a></li>
                             <li><a href="#">Facebook</a></li>
                             <li><a href="#">Instagram</a></li>
                           </ul>
@@ -117,7 +118,7 @@ if ($C_ID) {
         <div class="row site-hero-inner justify-content-center align-items-center">
           <div class="col-md-10 text-center">
             <h1 class="heading" data-aos="fade-up">Welcome to <em>Frame</em>Me</h1>
-            <p class="sub-heading mb-5" data-aos="fade-up" data-aos-delay="100">XXXXXX XXXXXX XXXXXX &amp; XXXXXXX.</p>
+            <p class="sub-heading mb-5" data-aos="fade-up" data-aos-delay="100">Capture Your Moment</p>
             <!-- <p data-aos="fade-up" data-aos-delay="100"><a href="#" class="btn uppercase btn-primary mr-md-2 mr-0 mb-3 d-sm-inline d-block">Explore The Beauty</a> <a href="#" class="btn uppercase btn-outline-light d-sm-inline d-block">Download</a></p> -->
           </div>
         </div>

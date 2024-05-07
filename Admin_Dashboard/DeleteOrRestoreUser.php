@@ -36,7 +36,7 @@ if ($stmt->execute()) {
 
         if ($isCustomer) {
             echo "<script language='JavaScript'>
-    alert ('Customer Has Been Deleted Successfully !');
+    alert ('Customer Has Been Restored Successfully !');
     </script>";
 
             echo "<script language='JavaScript'>
@@ -45,7 +45,7 @@ if ($stmt->execute()) {
         } else {
 
             echo "<script language='JavaScript'>
-    alert ('Photographer Has Been Deleted Successfully !');
+    alert ('Photographer Has Been Restored Successfully !');
     </script>";
 
             echo "<script language='JavaScript'>

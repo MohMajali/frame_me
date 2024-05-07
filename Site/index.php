@@ -66,6 +66,7 @@ if ($C_ID) {
                       <ul class="list-unstyled menu">
                         <li class="active"><a href="index.php">Home</a></li>
                         <li><a href="Photographers.php">Photographers</a></li>
+                        <li><a href="Categories.php">Categories</a></li>
                         <li><a href="about.php">About</a></li>
 
                         <?php if ($C_ID) {?>
@@ -88,7 +89,7 @@ if ($C_ID) {
                       <div class="row">
                         <div class="col-md-6 mb-5">
                           <h3>Contact Info</h3>
-                          <p>98 West 21th Street, Suite 721 <br> New York NY 10016</p>
+                          <p>Queen Rania st <br> Amman </p>
                           <p>info@frameme.com</p>
                           <p>+962 70000 0000</p>
 
@@ -96,7 +97,7 @@ if ($C_ID) {
                         <div class="col-md-6">
                           <h3>Connect With Us</h3>
                           <ul class="list-unstyled">
-                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">X</a></li>
                             <li><a href="#">Facebook</a></li>
                             <li><a href="#">Instagram</a></li>
                           </ul>
@@ -113,12 +114,12 @@ if ($C_ID) {
     </header>
     <!-- END head -->
 
-    <section class="site-hero overlay" style="background-image: url(img/index_background.jpeg)">
+    <section class="site-hero overlay" style="">
       <div class="container">
         <div class="row site-hero-inner justify-content-center align-items-center">
           <div class="col-md-10 text-center">
             <h1 class="heading" data-aos="fade-up">Welcome to <em>Frame</em>Me</h1>
-            <p class="sub-heading mb-5" data-aos="fade-up" data-aos-delay="100">XXXXXX XXXXXX XXXXXX &amp; XXXXXXX.</p>
+            <p class="sub-heading mb-5" data-aos="fade-up" data-aos-delay="100">Capture your moments.</p>
             <!-- <p data-aos="fade-up" data-aos-delay="100"><a href="#" class="btn uppercase btn-primary mr-md-2 mr-0 mb-3 d-sm-inline d-block">Explore The Beauty</a> <a href="#" class="btn uppercase btn-outline-light d-sm-inline d-block">Download</a></p> -->
           </div>
         </div>
@@ -172,8 +173,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
         <div class="row justify-content-center text-center mb-5">
           <div class="col-md-8">
             <h2 class="heading" data-aos="fade-up">Our Categories</h2>
-            <p class="lead" data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. In dolor, iusto doloremque quo odio repudiandae sunt eveniet? Enim facilis laborum voluptate id porro, culpa maiores quis, blanditiis laboriosam alias. Sed.</p>
-          </div>
+            <p class="lead" data-aos="fade-up">  </div>
         </div>
         <div class="row">
         <?php
@@ -205,9 +205,8 @@ while ($row1 = mysqli_fetch_array($sql1)) {
       <div class="container">
         <div class="row justify-content-center text-center mb-5">
           <div class="col-md-8">
-            <h2 class="heading" data-aos="fade-up">Some of Photographers Works</h2>
-            <p class="lead" data-aos="fade-up" data-aos-delay="100">Lorem ipsum dolor sit amet, consectetur adipisicing elit. In dolor, iusto doloremque quo odio repudiandae sunt eveniet? Enim facilis laborum voluptate id porro, culpa maiores quis, blanditiis laboriosam alias. Sed.</p>
-          </div>
+            <h2 class="heading" data-aos="fade-up">Photographers Works</h2>
+            <p class="lead" data-aos="fade-up" data-aos-delay="100"> </div>
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -220,19 +219,29 @@ while ($row1 = mysqli_fetch_array($sql1)) {
     $photo_id = $row1['id'];
     $photo = $row1['image'];
     $category_photo_id = $row1['category_id'];
+    $photographer_pictures_id = $row1['photographer_id'];
 
     $sql2 = mysqli_query($con, "SELECT * from categories WHERE id = '$category_photo_id'");
     $row1 = mysqli_fetch_array($sql2);
 
     $category_photo = $row1['category'];
 
-    ?>
+    $sql3 = mysqli_query($con, "SELECT * from users WHERE id = '$photographer_pictures_id'");
+    $row3 = mysqli_fetch_array($sql3);
+
+    $active_photographer = $row3['active'];
+    $request_status = $row3['request_status'];
+
+    // if ($active_photographer == 1 && $request_status == 'Accepted') {
+
+        ?>
 
               <div id="img-<?php echo $photo_id ?>" class="slider-item">
-                <img src="../Photographer_Dashboard/<?php echo $photo ?>" alt="Image placeholder" class="img-fluid" height="120px">
+                <img src="../Photographer_Dashboard/<?php echo $photo ?>" alt="Image placeholder" class="img-fluid">
                 <h3 class="text-center"><?php echo $category_photo ?></h3>
               </div>
               <?php
+// }
 }?>
 
             </div>
@@ -247,55 +256,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
     <!-- END section -->
 
 
-    <!-- END section -->
-    <section class="section testimonial-section">
-      <div class="container">
-        <div class="row justify-content-center text-center mb-5">
-          <div class="col-md-8">
-            <h2 class="heading" data-aos="fade-up">Testimonial</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="testimonial text-center">
-              <div class="author-image mb-3">
-                <img src="img/person_1.jpg" alt="Image placeholder" class="rounded-circle">
-              </div>
-              <blockquote>
 
-                <p>&ldquo;This website is awesome.&rdquo;</p>
-              </blockquote>
-              <p><em>&mdash; Moh Majali</em></p>
-
-            </div>
-          </div>
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-            <div class="testimonial text-center">
-              <div class="author-image mb-3">
-                <img src="img/person_2.jpg" alt="Image placeholder" class="rounded-circle">
-              </div>
-              <blockquote>
-                <p>&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. In dolor, iusto doloremque quo odio repudiandae sunt eveniet? Enim facilis laborum voluptate id porro, culpa maiores quis, blanditiis laboriosam alias&rdquo;</p>
-              </blockquote>
-              <p><em>&mdash; John Doe</em></p>
-            </div>
-          </div>
-
-          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-            <div class="testimonial text-center">
-              <div class="author-image mb-3">
-                <img src="img/person_3.jpg" alt="Image placeholder" class="rounded-circle">
-              </div>
-              <blockquote>
-
-                <p>&ldquo;Nostrum, alias, provident magnam sit blanditiis laboriosam unde quaerat, at ipsam, ratione maiores saepe nisi modi corporis quas! Beatae quam, quod aspernatur debitis nesciunt quasi porro ea iste nobis aliquid perspiciatis nostrum culpa impedit aut, iure blanditiis itaque similique sunt!&rdquo;</p>
-              </blockquote>
-              <p><em>&mdash; John Doe</em></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <?php include './Footer.php';?>
 

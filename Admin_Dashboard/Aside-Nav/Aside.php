@@ -21,6 +21,12 @@
     </li>
 
     <li class="nav-item">
+      <a class="nav-link collapsed" href="./High-Rated-Photographers.php">
+        <i class="bi bi-people-fill"></i><span>High-Rated-Photographers</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
       <a class="nav-link collapsed" href="./Customers.php">
         <i class="bi bi-people-fill"></i><span>Customers</span>
       </a>

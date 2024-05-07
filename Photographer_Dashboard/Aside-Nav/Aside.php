@@ -36,5 +36,12 @@
     </li>
 
 
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="./Reviews.php">
+        <i class="bi bi-archive"></i><span>Reviews</span>
+      </a>
+    </li>
+
+
   </ul>
 </aside>

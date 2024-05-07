@@ -7,7 +7,7 @@ if (isset($_POST['Submit'])) {
     $Email = $_POST['email'];
     $Password = $_POST['password'];
 
-    $query = mysqli_query($con, "SELECT * FROM users WHERE email ='$Email' AND password = '$Password' AND active = 1");
+    $query = mysqli_query($con, "SELECT * FROM users WHERE email ='$Email' AND password = '$Password'");
 
     if (mysqli_num_rows($query) > 0) {
 
@@ -24,21 +24,44 @@ if (isset($_POST['Submit'])) {
 
         } else if ($row['user_type_id'] == 2) {
 
-            $P_ID = $row['id'];
-            $_SESSION['P_Log'] = $P_ID;
+            if ($row['request_status'] == 'Pending') {
 
-            echo '<script language="JavaScript">
+                echo "<script language='JavaScript'>
+            alert ('Please Wait for Admin Response !');
+       </script>";
+
+            } else if ($row['active'] == 0) {
+
+                echo "<script language='JavaScript'>
+              alert ('Your Account Has Been Deactivated By Admin, Please Contact Support !');
+         </script>";
+
+            } else {
+
+                $P_ID = $row['id'];
+                $_SESSION['P_Log'] = $P_ID;
+
+                echo '<script language="JavaScript">
       document.location="./Photographer_Dashboard/";
       </script>';
+            }
 
         } else if ($row['user_type_id'] == 3) {
 
-            $C_ID = $row['id'];
-            $_SESSION['C_Log'] = $C_ID;
+            if ($row['active'] == 0) {
 
-            echo '<script language="JavaScript">
-    document.location="./Site/";
-    </script>';
+                echo "<script language='JavaScript'>
+          alert ('Your Account Has Been Deactivated By Admin, Please Contact Support !');
+     </script>";
+
+            } else {
+                $C_ID = $row['id'];
+                $_SESSION['C_Log'] = $C_ID;
+
+                echo '<script language="JavaScript">
+  document.location="./Site/";
+  </script>';
+            }
 
         }
 
@@ -146,7 +169,7 @@ if (isset($_POST['Submit'])) {
                         </div>
                       </div>
 
-                      <div class="col-12">
+                      <!-- <div class="col-12">
                         <label for="yourPassword" class="form-label"
                           >Password</label
                         >
@@ -161,7 +184,23 @@ if (isset($_POST['Submit'])) {
                         <div class="invalid-feedback" id="password-Message">
                           Please enter your password!
                         </div>
-                      </div>
+                      </div> -->
+
+
+
+                      <div class="col-12">
+                  <label class="form-label" for="password">Password</label>
+                  <div class="input-group input-group-merge">
+                    <input
+                      type="password"
+                      id="password"
+                      class="form-control" name="password"
+                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                      aria-describedby="password"
+                    />
+                    <span onclick="onClick(event)" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                  </div>
+                </div>
 
                       <div class="col-12">
                         <div class="form-check">
@@ -212,28 +251,28 @@ if (isset($_POST['Submit'])) {
     <script src="assets/vendor/chart.js/chart.umd.js"></script>
     <script src="assets/vendor/echarts/echarts.min.js"></script>
     <script src="assets/vendor/quill/quill.min.js"></script>
-    <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
     <script src="assets/vendor/tinymce/tinymce.min.js"></script>
     <script src="assets/vendor/php-email-form/validate.js"></script>
 
     <script>
-      // let loginForm = $('#login-form')
-      // let passwordMessageDiv = $('#password-Message')
-      // let passwordInput = document.getElementById('yourPassword')
-      // const re = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{6,}$");
+
+      const onClick = (e) => {
 
 
-      // const onChange = (e) => {
-      //   console.log(e.value);
+        if(e.target.classList[1] == 'bx-hide'){
 
-      //   if(!re.test(e.value)){
+          document.getElementById('password').type = 'text'
+          e.target.classList.remove('bx-hide')
+          e.target.classList.add('bx-show')
 
-      //     passwordMessageDiv.php("<p>Password Must be at least One Upper case, One Lower Case, Numbers & Symbols</p>")
-      //   }
-      // }
+        } else {
+          document.getElementById('password').type = 'password'
+          e.target.classList.remove('bx-show')
+          e.target.classList.add('bx-hide')
+        }
+      }
     </script>
 
-    <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
   </body>
 </html>

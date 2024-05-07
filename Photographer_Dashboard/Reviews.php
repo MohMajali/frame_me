@@ -21,29 +21,6 @@ if (!$P_ID) {
     $phone = $row1['phone'];
     $image = $row1['image'];
 
-    if (isset($_POST['Submit'])) {
-
-        $category_id = $_POST['category_id'];
-        $photographer_id = $_POST['photographer_id'];
-        $accessorie = $_POST['accessorie'];
-
-        $stmt = $con->prepare("INSERT INTO photographer_accessories (category_id, photographer_id, accessorie) VALUES (?, ?, ?) ");
-
-        $stmt->bind_param("iis", $category_id, $photographer_id, $accessorie);
-
-        if ($stmt->execute()) {
-
-            echo "<script language='JavaScript'>
-                alert ('Accessorie Has Been Updated Successfully !');
-           </script>";
-
-            echo "<script language='JavaScript'>
-          document.location='./Accessories.php';
-             </script>";
-
-        }
-    }
-
 }
 
 ?>
@@ -54,7 +31,7 @@ if (!$P_ID) {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Accessories - FrameMe</title>
+    <title>Photos - FrameMe</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 
@@ -146,32 +123,23 @@ if (!$P_ID) {
 
     <main id="main" class="main">
       <div class="pagetitle">
-        <h1>Accessories</h1>
+        <h1>Photos</h1>
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item">Accessories</li>
+            <li class="breadcrumb-item">Photos</li>
           </ol>
         </nav>
       </div>
       <!-- End Page Title -->
       <section class="section">
-      <div class="mb-3">
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#verticalycentered"
-          >
-            Add New Accessory
-          </button>
-        </div>
+
 
         <div class="modal fade" id="verticalycentered" tabindex="-1">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Accessory Information</h5>
+                <h5 class="modal-title">Review</h5>
                 <button
                   type="button"
                   class="btn-close"
@@ -181,52 +149,22 @@ if (!$P_ID) {
               </div>
               <div class="modal-body">
 
-                <form method="POST" action="./Accessories.php" enctype="multipart/form-data">
+                <form  action="#" >
 
-                <input type="hidden" name="photographer_id" value="<?php echo $P_ID ?>" class="form-control" />
+                <input type="hidden" name="review_id" value="" class="form-control" />
+
 
                   <div class="row mb-3">
                     <label for="inputText" class="col-sm-4 col-form-label"
-                      >Category Name</label
+                      > Review</label
                     >
                     <div class="col-sm-8">
 
-
-                      <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example" name="category_id" required>
-                          <option selected>Open this select Category</option>
-
-                          <?php
-$sql1 = mysqli_query($con, "SELECT * from categories WHERE active = 1");
-
-while ($row1 = mysqli_fetch_array($sql1)) {
-
-    $category_id = $row1['id'];
-    $category = $row1['category'];
-    ?>
-                          <option value="<?php echo $category_id ?>"><?php echo $category ?></option>
-
-<?php
-}?>
-                        </select>
+                      <textarea name="" class="form-control" id="review_data"></textarea>
                     </div>
                   </div>
 
-                  <div class="row mb-3">
-                    <label for="inputText" class="col-sm-4 col-form-label"
-                      > Accessorie</label
-                    >
-                    <div class="col-sm-8">
-                      <input type="accessorie" name="accessorie" class="form-control" required/>
-                    </div>
-                  </div>
 
-                  <div class="row mb-3">
-                    <div class="text-end">
-                      <button type="submit" name="Submit" class="btn btn-primary">
-                        Submit Form
-                      </button>
-                    </div>
-                  </div>
                 </form>
 
               </div>
@@ -253,33 +191,51 @@ while ($row1 = mysqli_fetch_array($sql1)) {
                   <thead>
                     <tr>
                       <th scope="col">ID</th>
-                      <th scope="col">Accessory</th>
-                      <th scope="col">Category</th>
+                      <th scope="col">Customer Name</th>
+                      <th scope="col">Category Name</th>
                       <th scope="col">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
 <?php
-$sql1 = mysqli_query($con, "SELECT * from photographer_accessories WHERE photographer_id = '$P_ID' ORDER BY id DESC");
+$sql1 = mysqli_query($con, "SELECT * from reservations WHERE photographer_id = '$P_ID' ORDER BY id DESC");
 
 while ($row1 = mysqli_fetch_array($sql1)) {
 
-    $accessory_id = $row1['id'];
+    $reservation_id = $row1['id'];
+    $status = $row1['status'];
+    $customer_id = $row1['customer_id'];
     $category_id = $row1['category_id'];
-    $accessorie = $row1['accessorie'];
+    $review = $row1['review'];
+    $created_at = $row1['created_at'];
 
     $sql2 = mysqli_query($con, "SELECT * from categories WHERE id = '$category_id'");
     $row2 = mysqli_fetch_array($sql2);
 
     $category_name = $row2['category'];
 
+    $sql3 = mysqli_query($con, "SELECT * from users WHERE id = '$customer_id'");
+    $row3 = mysqli_fetch_array($sql3);
+
+    $customer_name = $row3['name'];
+
     ?>
                     <tr>
-                      <th scope="row"><?php echo $accessory_id ?></th>
-                      <th scope="row"><?php echo $accessorie ?></th>
+                      <th scope="row"><?php echo $reservation_id ?></th>
+                      <td><?php echo $customer_name ?></td>
                       <td><?php echo $category_name ?></td>
                       <td>
-                        <a href="./DeletePicture.php?accessory_id=<?php echo $accessory_id ?>" class="btn btn-danger">Delete</a>
+                        <!-- <a href="./DeletePicture.php?picture_id=<?php echo $picture_id ?>" class="btn btn-danger">Delete</a> -->
+
+                        <button
+                        type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#verticalycentered"
+            id="btn-<?php echo $review ?>"
+            onclick="onClick(event)"
+
+                        >View Review</button>
                       </td>
 
                     </tr>
@@ -314,7 +270,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
 
     <script>
     window.addEventListener('DOMContentLoaded', (event) => {
-     document.querySelector('#sidebar-nav .nav-item:nth-child(4) .nav-link').classList.remove('collapsed')
+     document.querySelector('#sidebar-nav .nav-item:nth-child(6) .nav-link').classList.remove('collapsed')
    });
 </script>
 
@@ -330,5 +286,13 @@ while ($row1 = mysqli_fetch_array($sql1)) {
 
     <!-- Template Main JS File -->
     <script src="../assets/js/main.js"></script>
+
+
+    <script>
+
+        const onClick = (e) => {
+            document.getElementById('review_data').value = e.target.id.split('-')[1]
+        }
+    </script>
   </body>
 </html>

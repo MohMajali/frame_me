@@ -12,7 +12,7 @@
           </div>
 
           <div class="col-md-3 mb-5 pr-md-5 contact-info">
-            <p><span class="d-block">Address:</span> <span> 98 West 21th Street, Suite 721 New York NY 10016</span></p>
+            <p><span class="d-block">Address:</span> <span>Queen Rania , Amman </span></p>
             <p><span class="d-block">Phone:</span> <span> +962 70000 0000</span></p>
             <p><span class="d-block">Email:</span> <span> info@frameme.com</span></p>
           </div>

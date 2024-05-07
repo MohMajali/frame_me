@@ -22,7 +22,7 @@ if ($C_ID) {
 <html lang="en">
   <head>
     <title>FrameMe</title>
-    
+
         <!-- Favicons -->
         <link href="../assets/img/logo_1.png" rel="icon" />
     <link href="../assets/img/logo_1.png" rel="apple-touch-icon" />
@@ -35,7 +35,7 @@ if ($C_ID) {
     <link rel="stylesheet" href="css/animate.css">
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/aos.css">
-    
+
     <link rel="stylesheet" href="fonts/ionicons/css/ionicons.min.css">
     <link rel="stylesheet" href="fonts/fontawesome/css/font-awesome.min.css">
 
@@ -43,11 +43,11 @@ if ($C_ID) {
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-    
+
     <header class="site-header">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-4 site-logo" data-aos="fade"><a href="index.html"><em>FrameMe</em></a></div>
+          <div class="col-4 site-logo" data-aos="fade"><a href="index.php"><em>FrameMe</em></a></div>
           <div class="col-8">
 
 
@@ -63,11 +63,12 @@ if ($C_ID) {
                 <div class="container">
                   <div class="row full-height align-items-center">
                     <div class="col-md-6">
-                    <ul class="list-unstyled menu">
+                      <ul class="list-unstyled menu">
                         <li><a href="index.php">Home</a></li>
-                        <li ><a href="Photographers.php">Photographers</a></li>
-                        <li><a href="Categories.php">Categories</a></li>
-                        <li class="active"><a href="about.php">About</a></li>
+                        <li><a href="Photographers.php">Photographers</a></li>
+                        <li class="active"><a href="Categories.php">Categories</a></li>
+                        <li><a href="about.php">About</a></li>
+
                         <?php if ($C_ID) {?>
                         <li><a href="Reservations.php">Reservations</a></li>
                         <li><a href="Account.php">Account</a></li>
@@ -79,23 +80,24 @@ if ($C_ID) {
 
                         <?php if ($C_ID) {?>
                         <li><a href="./logout.php">Logout</a></li>
-                        
+
                         <?php }?>
+
                       </ul>
                     </div>
                     <div class="col-md-6 extra-info">
                       <div class="row">
                         <div class="col-md-6 mb-5">
                           <h3>Contact Info</h3>
-                          <p>Queen Rania st <br> Amman</p>
+                          <p>Queen Rania st <br> Amman </p>
                           <p>info@frameme.com</p>
                           <p>+962 70000 0000</p>
-                          
+
                         </div>
                         <div class="col-md-6">
                           <h3>Connect With Us</h3>
                           <ul class="list-unstyled">
-                            <li><a href="#">x</a></li>
+                            <li><a href="#">X</a></li>
                             <li><a href="#">Facebook</a></li>
                             <li><a href="#">Instagram</a></li>
                           </ul>
@@ -112,12 +114,13 @@ if ($C_ID) {
     </header>
     <!-- END head -->
 
-    <section class="site-hero overlay page-inside" style="background-image: url(img/index_background.jpeg)">
+    <section class="site-hero overlay" style="background-image: url(img/index_background.jpeg)">
       <div class="container">
         <div class="row site-hero-inner justify-content-center align-items-center">
           <div class="col-md-10 text-center">
-            <h1 class="heading" data-aos="fade-up">About Us</h1>
-            <!-- <p class="sub-heading mb-5" data-aos="fade-up" data-aos-delay="100">Enjoy your stay.</p> -->
+            <h1 class="heading" data-aos="fade-up">Welcome to <em>Frame</em>Me</h1>
+            <p class="sub-heading mb-5" data-aos="fade-up" data-aos-delay="100">Capture your moments.</p>
+            <!-- <p data-aos="fade-up" data-aos-delay="100"><a href="#" class="btn uppercase btn-primary mr-md-2 mr-0 mb-3 d-sm-inline d-block">Explore The Beauty</a> <a href="#" class="btn uppercase btn-outline-light d-sm-inline d-block">Download</a></p> -->
           </div>
         </div>
         <!-- <a href="#" class="scroll-down">Scroll Down</a> -->
@@ -125,62 +128,55 @@ if ($C_ID) {
     </section>
     <!-- END section -->
 
-    
 
 
-    
+
+
     <section class="section blog-post-entry bg-pattern">
       <div class="container">
         <div class="row justify-content-center text-center mb-5">
           <div class="col-md-8">
-            <h2 class="heading" data-aos="fade-up">Who Are We</h2>
-            <p class="lead" data-aos="fade-up">Because photography inspires us to stop and contemplate the unique moments in our lives, we developed the FrameMe platform to have a mark on immortalizing moments in unforgettable photos. <br/>
-            "Create special memories for you and those you love"</div>
+            <h2 class="heading" data-aos="fade-up">Our Categories</h2>
+            <p class="lead" data-aos="fade-up">  </div>
         </div>
         <div class="row">
+        <?php
+$sql1 = mysqli_query($con, "SELECT * from categories WHERE active = 1 ORDER BY id DESC");
+
+while ($row1 = mysqli_fetch_array($sql1)) {
+
+    $category_id = $row1['id'];
+    $category = $row1['category'];
+    $category_image = $row1['image'];
+
+    ?>
           <div class="col-lg-4 col-md-6 col-sm-6 col-12 post" data-aos="fade-up" data-aos-delay="100">
-
             <div class="media media-custom d-block mb-4">
-              <a href="#" class="mb-4 d-block"><img src="img/person_3.jpg" alt="Image placeholder" class="img-fluid"></a>
+              <a href="./Photographers.php?category_id=<?php echo $category_id ?>" class="mb-4 d-block"><img src="../Admin_Dashboard/<?php echo $category_image ?>" alt="Image placeholder" class="img-fluid"></a>
               <div class="media-body">
-                <span class="meta-post">CEO, Co-Founder</span>
-                <h2 class="mt-0 mb-3"><a href="#">Batool Alramahi</a></h2>
-              </div>
-            </div>
-
-          </div>
-          <div class="col-lg-4 col-md-6 col-sm-6 col-12 post" data-aos="fade-up" data-aos-delay="200">
-            <div class="media media-custom d-block mb-4">
-              <a href="#" class="mb-4 d-block"><img src="img/person_1.jpg" alt="Image placeholder" class="img-fluid"></a>
-              <div class="media-body">
-                <span class="meta-post">CTO, Co-Founder</span>
-                <h2 class="mt-0 mb-3"><a href="#">Lina Droos</a></h2>
+                <!-- <span class="meta-post">February 26, 2018</span> -->
+                <h2 class="mt-0 mb-3"><a href="#"><?php echo $category ?></a></h2>
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6 col-sm-6 col-12 post" data-aos="fade-up" data-aos-delay="300">
-            <div class="media media-custom d-block mb-4">
-              <a href="#" class="mb-4 d-block"><img src="img/person_2.jpg" alt="Image placeholder" class="img-fluid"></a>
-              <div class="media-body">
-                <span class="meta-post">Marketer, Co-Founder</span>
-                <h2 class="mt-0 mb-3"><a href="#">Ghofran Hijazi</a></h2>
-              </div>
-            </div>
-          </div>
-
-
-
+          <?php
+}?>
         </div>
       </div>
     </section>
 
-    <?php include('./Footer.php');?>
-    
+
+
+
+
+
+    <?php include './Footer.php';?>
+
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.waypoints.min.js"></script>
+    <!-- <script src="js/jquery.waypoints.min.js"></script> -->
     <script src="js/aos.js"></script>
     <script src="js/main.js"></script>
   </body>

@@ -167,7 +167,8 @@ textarea.form-control {
 }
 
 .site-hero {
-  background-size: cover;
+  background-image: url(../img/index_background_2.jpg);
+  background-size: contain;
   height: 100vh;
   min-height: 700px;
   width: 100%;
@@ -661,7 +662,7 @@ textarea.form-control {
 }
 
 .owl-carousel.major-caousel .slider-item {
-  height: inherit;
+  /* height: inherit; */
   min-height: inherit;
 }
 

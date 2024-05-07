@@ -19,33 +19,26 @@ if (!$P_ID) {
     $email = $row1['email'];
     $phone = $row1['phone'];
     $image = $row1['image'];
-    $request_status = $row1['request_status'];
 
-    if ($request_status == 'Pending') {
-        echo '<script language="JavaScript">
-      document.location="./Photos.php";
-     </script>';
-    } else {
-        if (isset($_POST['Submit'])) {
+    if (isset($_POST['Submit'])) {
 
-            $reservation_id = $_POST['reservation_id'];
-            $total_price = $_POST['total_price'];
+        $reservation_id = $_POST['reservation_id'];
+        $total_price = $_POST['total_price'];
 
-            $stmt = $con->prepare("UPDATE reservations SET total_price = ? WHERE id = ? ");
+        $stmt = $con->prepare("UPDATE reservations SET total_price = ? WHERE id = ? ");
 
-            $stmt->bind_param("di", $total_price, $reservation_id);
+        $stmt->bind_param("di", $total_price, $reservation_id);
 
-            if ($stmt->execute()) {
+        if ($stmt->execute()) {
 
-                echo "<script language='JavaScript'>
+            echo "<script language='JavaScript'>
               alert ('Price Has Been Updated Successfully !');
          </script>";
 
-                echo "<script language='JavaScript'>
+            echo "<script language='JavaScript'>
         document.location='./Reservations.php';
            </script>";
 
-            }
         }
     }
 
@@ -225,9 +218,8 @@ if (!$P_ID) {
                     <tr>
                       <th scope="col">ID</th>
                       <th scope="col">Customer Name</th>
-                      <th scope="col">Photographer Name</th>
                       <th scope="col">Cateogory Name</th>
-                      <th scope="col">Date Time</th>
+                      <th scope="col">Session Date</th>
                       <th scope="col">Status</th>
                       <th scope="col">Total Price</th>
                       <th scope="col">Created At</th>
@@ -271,7 +263,6 @@ while ($row1 = mysqli_fetch_array($sql1)) {
                     <tr>
                       <th scope="row"><?php echo $reservation_id ?></th>
                       <td><?php echo $customer_name ?></td>
-                      <td><?php echo $photographer_name ?></td>
                       <td><?php echo $category_name ?></td>
                       <td><?php echo $start_date ?> - <?php echo $end_date ?> - <?php echo $start_time ?> - <?php echo $end_time ?></td>
                       <td><?php echo $status ?> </td>

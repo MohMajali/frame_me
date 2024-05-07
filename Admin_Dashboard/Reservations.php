@@ -171,7 +171,7 @@ if (!$A_ID) {
                       <th scope="col">Customer Name</th>
                       <th scope="col">Photographer Name</th>
                       <th scope="col">Cateogory Name</th>
-                      <th scope="col">Date Time</th>
+                      <th scope="col">Session Date</th>
                       <th scope="col">Status</th>
                       <th scope="col">Created At</th>
                       <th scope="col">Actions</th>
@@ -267,7 +267,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
 
     <script>
     window.addEventListener('DOMContentLoaded', (event) => {
-     document.querySelector('#sidebar-nav .nav-item:nth-child(5) .nav-link').classList.remove('collapsed')
+     document.querySelector('#sidebar-nav .nav-item:nth-child(6) .nav-link').classList.remove('collapsed')
    });
 </script>
 

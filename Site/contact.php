@@ -90,6 +90,7 @@ document.location='./contact.php';
                     <ul class="list-unstyled menu">
                         <li><a href="index.php">Home</a></li>
                         <li ><a href="Photographers.php">Photographers</a></li>
+                        <li><a href="Categories.php">Categories</a></li>
                         <li><a href="about.php">About</a></li>
                         <?php if ($C_ID) {?>
                         <li><a href="Reservations.php">Reservations</a></li>
@@ -110,7 +111,7 @@ document.location='./contact.php';
                       <div class="row">
                         <div class="col-md-6 mb-5">
                           <h3>Contact Info</h3>
-                          <p>98 West 21th Street, Suite 721 <br> New York NY 10016</p>
+                          <p>Queen Rania st <br> Amman </p>
                           <p>info@frameme.com</p>
                           <p>+962 70000 0000</p>
 
@@ -118,7 +119,7 @@ document.location='./contact.php';
                         <div class="col-md-6">
                           <h3>Connect With Us</h3>
                           <ul class="list-unstyled">
-                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">X</a></li>
                             <li><a href="#">Facebook</a></li>
                             <li><a href="#">Instagram</a></li>
                           </ul>
@@ -189,7 +190,7 @@ document.location='./contact.php';
           <div class="col-md-5">
             <div class="row">
               <div class="col-md-10 ml-auto contact-info">
-                <p><span class="d-block">Address:</span> <span> 98 West 21th Street, Suite 721 New York NY 10016</span></p>
+                <p><span class="d-block">Address:</span> <span>Queen Rania , Amman</span></p>
                 <p><span class="d-block">Phone:</span> <span> +962 70000 0000</span></p>
                 <p><span class="d-block">Email:</span> <span> info@frameme.com</span></p>
               </div>

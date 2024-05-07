@@ -31,23 +31,34 @@ if ($C_ID) {
         $start_time = $_POST['start_time'];
         $end_time = $_POST['end_time'];
 
+        $start_timestamp = strtotime("$start_date $start_time");
+        $end_timestamp = strtotime("$end_date $end_time");
 
-        $stmt = $con->prepare("INSERT INTO reservations (category_id, photographer_id, customer_id, start_date, end_date, start_time, end_time) 
-        VALUES (?, ?, ?, ?, ?, ?, ?) ");
-
-        $stmt->bind_param("iiissss", $category_id, $photographer_id, $C_ID, $start_date, $end_date, $start_time, $end_time);
-
-        if ($stmt->execute()) {
+        if ($end_timestamp < $start_timestamp) {
 
             echo "<script language='JavaScript'>
-            alert ('Reservation Success !');
-       </script>";
+          alert ('End Time/Date Must Be Greater Than Start Time/Date !');
+     </script>";
 
-            echo "<script language='JavaScript'>
-      document.location='./Reservations.php';
+        } else {
+            $stmt = $con->prepare("INSERT INTO reservations (category_id, photographer_id, customer_id, start_date, end_date, start_time, end_time)
+          VALUES (?, ?, ?, ?, ?, ?, ?) ");
+
+            $stmt->bind_param("iiissss", $category_id, $photographer_id, $C_ID, $start_date, $end_date, $start_time, $end_time);
+
+            if ($stmt->execute()) {
+
+                echo "<script language='JavaScript'>
+              alert ('Reservation Success !');
          </script>";
 
+                echo "<script language='JavaScript'>
+        document.location='./Reservations.php';
+           </script>";
+
+            }
         }
+
     }
 }
 
@@ -101,6 +112,7 @@ if ($C_ID) {
                     <ul class="list-unstyled menu">
                         <li><a href="index.php">Home</a></li>
                         <li class="active"><a href="Photographers.php">Photographers</a></li>
+                        <li><a href="Categories.php">Categories</a></li>
                         <li><a href="about.php">About</a></li>
                         <?php if ($C_ID) {?>
                         <li><a href="Reservations.php">Reservations</a></li>
@@ -113,7 +125,7 @@ if ($C_ID) {
 
                         <?php if ($C_ID) {?>
                         <li><a href="./logout.php">Logout</a></li>
-                        
+
                         <?php }?>
                       </ul>
                     </div>
@@ -121,7 +133,7 @@ if ($C_ID) {
                       <div class="row">
                         <div class="col-md-6 mb-5">
                           <h3>Contact Info</h3>
-                          <p>98 West 21th Street, Suite 721 <br> New York NY 10016</p>
+                          <p>Queen Rania st <br> Amman</p>
                           <p>info@frameme.com</p>
                           <p>+962 70000 0000</p>
 
@@ -129,7 +141,7 @@ if ($C_ID) {
                         <div class="col-md-6">
                           <h3>Connect With Us</h3>
                           <ul class="list-unstyled">
-                            <li><a href="#">Twitter</a></li>
+                            <li><a href="#">X</a></li>
                             <li><a href="#">Facebook</a></li>
                             <li><a href="#">Instagram</a></li>
                           </ul>
@@ -195,7 +207,7 @@ if ($C_ID) {
                     <form class="row g-3 needs-validation" method="POST" action="./Make-Reservation.php?photographer_id=<?php echo $photographer_id ?>" >
 
 
-                    <input type="hidden" name="photographer_id" value="<?php echo $photographer_id ?>">
+                    <input type="hidden" name="photographer_id" id="photographer_id" value="<?php echo $photographer_id ?>">
                     <input type="hidden" name="C_ID" value="<?php echo $C_ID ?>">
 
 
@@ -204,7 +216,7 @@ if ($C_ID) {
                           >Category</label
                         >
 
-                            <select name="category_id" id="category" class="form-control">
+                            <select onchange="onChangeCategory(event)" name="category_id" id="category" class="form-control">
                             <?php
 $sql1 = mysqli_query($con, "SELECT * from categories WHERE active = 1 ORDER BY id DESC");
 
@@ -282,6 +294,18 @@ while ($row1 = mysqli_fetch_array($sql1)) {
                       </div>
 
 
+                      <div class="col-12 mb-3" >
+                        <label for="accessories" class="form-label"
+                          >Accessories</label
+                        >
+
+                        <div id="accessories_div">
+
+                        </div>
+
+                      </div>
+
+
 
 
                       <div class="col-12">
@@ -318,5 +342,38 @@ while ($row1 = mysqli_fetch_array($sql1)) {
     <script src="js/jquery.waypoints.min.js"></script>
     <script src="js/aos.js"></script>
     <script src="js/main.js"></script>
+
+
+
+    <script>
+      const onChangeCategory = (e) => {
+
+        photographer_id = document.getElementById('photographer_id').value
+        let accessoriesSection = $('#accessories_div')
+        console.log(photographer_id, e.target.value);
+        accessoriesArray = []
+
+        $.ajax({
+            type: 'GET',
+            url: `./GetAccessories.php?photographer_id=${photographer_id}&category_id=${e.target.value}`,
+            success: function(accessories){
+              accessoriesArray = JSON.parse(accessories)
+
+              accessoriesArray = accessoriesArray.map(acc => (`
+
+              <li>${acc.accessorie}</li>
+
+
+              `))
+
+              accessoriesSection.html(accessoriesArray)
+
+            },
+            error: function(){
+                alert('ERROR')
+            }
+        })
+      }
+    </script>
   </body>
 </html>

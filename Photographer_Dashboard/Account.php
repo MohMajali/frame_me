@@ -22,64 +22,57 @@ if (!$P_ID) {
     $image = $row1['image'];
     $password = $row1['password'];
     $description = $row1['description'];
-    $request_status = $row1['request_status'];
 
-    if ($request_status == 'Pending') {
-        echo '<script language="JavaScript">
-      document.location="./Photos.php";
-     </script>';
-    } else {
-        if (isset($_POST['Submit'])) {
+    if (isset($_POST['Submit'])) {
 
-            $P_ID = $_POST['P_ID'];
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $phone = $_POST['phone'];
-            $password = $_POST['password'];
-            $description = $_POST['description'];
-            $image = $_FILES["file"]["name"];
+        $P_ID = $_POST['P_ID'];
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $phone = $_POST['phone'];
+        $password = $_POST['password'];
+        $description = $_POST['description'];
+        $image = $_FILES["file"]["name"];
 
-            if ($image) {
+        if ($image) {
 
-                $image = 'Photographer_Images/' . $image;
+            $image = 'Photographer_Images/' . $image;
 
-                $stmt = $con->prepare("UPDATE users SET name = ?, email = ?, phone = ?, password = ?, image = ?, description = ? WHERE id = ? ");
+            $stmt = $con->prepare("UPDATE users SET name = ?, email = ?, phone = ?, password = ?, image = ?, description = ? WHERE id = ? ");
 
-                $stmt->bind_param("ssssssi", $name, $email, $phone, $password, $image, $description, $P_ID);
+            $stmt->bind_param("ssssssi", $name, $email, $phone, $password, $image, $description, $P_ID);
 
-                if ($stmt->execute()) {
+            if ($stmt->execute()) {
 
-                    move_uploaded_file($_FILES["file"]["tmp_name"], "./Photographer_Images/" . $_FILES["file"]["name"]);
+                move_uploaded_file($_FILES["file"]["tmp_name"], "./Photographer_Images/" . $_FILES["file"]["name"]);
 
-                    echo "<script language='JavaScript'>
+                echo "<script language='JavaScript'>
                 alert ('Account Has Been Updated Successfully !');
            </script>";
 
-                    echo "<script language='JavaScript'>
+                echo "<script language='JavaScript'>
           document.location='./Account.php';
              </script>";
 
-                }
-            } else {
+            }
+        } else {
 
-                $stmt = $con->prepare("UPDATE users SET name = ?, email = ?, phone = ?, password = ?, description = ? WHERE id = ? ");
+            $stmt = $con->prepare("UPDATE users SET name = ?, email = ?, phone = ?, password = ?, description = ? WHERE id = ? ");
 
-                $stmt->bind_param("sssssi", $name, $email, $phone, $password, $description, $P_ID);
+            $stmt->bind_param("sssssi", $name, $email, $phone, $password, $description, $P_ID);
 
-                if ($stmt->execute()) {
+            if ($stmt->execute()) {
 
-                    echo "<script language='JavaScript'>
+                echo "<script language='JavaScript'>
               alert ('Account Has Been Updated Successfully !');
          </script>";
 
-                    echo "<script language='JavaScript'>
+                echo "<script language='JavaScript'>
         document.location='./Account.php';
            </script>";
 
-                }
             }
-
         }
+
     }
 
 }
@@ -252,8 +245,8 @@ if (!$P_ID) {
                       >Phone</label
                     >
                     <div class="col-sm-10">
-                      <input type="text" name="phone" 
-                      
+                      <input type="text" name="phone"
+
                       id="yourPhone"
                           pattern="[0-9]{10}" title="Phone Number Must Be 10 Numbers"
                       value="<?php echo $phone ?>" class="form-control" id="inputText" required/>
@@ -276,11 +269,11 @@ if (!$P_ID) {
                       >Password</label
                     >
                     <div class="col-sm-10">
-                      <input type="text" 
-                      
+                      <input type="text"
+
                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                           title="Must Contain At Least One Number And One Uppercase And Lowercase Letter, And At Least 8 Or More Characters"
-                      
+
                       name="password" value="<?php echo $password ?>" class="form-control" id="inputText" required/>
                     </div>
                   </div>

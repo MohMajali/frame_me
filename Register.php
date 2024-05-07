@@ -11,6 +11,9 @@ if (isset($_POST['Submit'])) {
     $phone = '+962' . $_POST['phone'];
     $image = 'Photographer_Images/default_user.jpg';
     $userTypeId = $_POST['user_type_id'];
+    $category_id = $_POST['category_id'];
+    $photo = $_FILES["file"]["name"];
+    $photo = 'Photographer_Images/' . $photo;
     $price_range = "0.00";
     $total_rate = 0;
 
@@ -36,13 +39,47 @@ if (isset($_POST['Submit'])) {
 
         if ($stmt->execute()) {
 
-            echo "<script language='JavaScript'>
-            alert ('Registration Success, You Can Login Now !');
-       </script>";
+            if ($category_id) {
 
-            echo "<script language='JavaScript'>
-      document.location='./Login.php';
+                $stmt = $con->prepare("SELECT id FROM users WHERE email = ?");
+                $stmt->bind_param("s", $email);
+                $stmt->execute();
+                $stmt->store_result();
+
+                if ($stmt->num_rows > 0) {
+
+                    $stmt->bind_result($id);
+                    $stmt->fetch();
+
+                    $stmt = $con->prepare("INSERT INTO photographer_pictures (category_id, photographer_id, image) VALUES (?, ?, ?) ");
+
+                    $stmt->bind_param("iis", $category_id, $id, $photo);
+
+                    if ($stmt->execute()) {
+
+                        move_uploaded_file($_FILES["file"]["tmp_name"], "./Photographer_Dashboard/Photographer_Images/" . $_FILES["file"]["name"]);
+
+                        echo "<script language='JavaScript'>
+              alert ('Registration Success, Please Wait for Admin Response !');
          </script>";
+
+                        echo "<script language='JavaScript'>
+        document.location='./Login.php';
+           </script>";
+
+                    }
+
+                }
+            } else {
+
+                echo "<script language='JavaScript'>
+              alert ('Registration Success, You Can Login Now !');
+         </script>";
+
+                echo "<script language='JavaScript'>
+        document.location='./Login.php';
+           </script>";
+            }
 
         }
     }
@@ -124,7 +161,7 @@ if (isset($_POST['Submit'])) {
                       </p>
                     </div>
 
-                    <form class="row g-3 needs-validation" method="POSt" action="./Register.php" >
+                    <form class="row g-3 needs-validation" method="POSt" action="./Register.php" enctype="multipart/form-data">
                       <div class="col-12">
                         <label for="yourName" class="form-label"
                           >Your Name</label
@@ -175,20 +212,6 @@ if (isset($_POST['Submit'])) {
                         </div>
                       </div>
 
-
-                      <!-- <div class="col-12" id="price-range">
-                        <label for="yourPrice" class="form-label"
-                          >Price Range</label
-                        >
-                        <input
-                          type="text"
-                          name="price_range"
-                          class="form-control"
-                          id="yourPrice"
-                        />
-                      </div> -->
-
-
                       <div class="col-12">
                         <label for="yourPassword" class="form-label"
                           >Password</label
@@ -210,15 +233,51 @@ if (isset($_POST['Submit'])) {
 
                       <div class="col-12">
                         <label for="defaultSelect" class="form-label">Select Role</label>
-                        <!-- <select onchange="onChangeUserRole(event)" id="defaultSelect" name="user_type_id" class="form-select" required>
-                          <option value="2">Photographer</option>
-                          <option value="3">Customer</option>
-                        </select> -->
-
-                        <select id="defaultSelect" name="user_type_id" class="form-select" required>
+                        <select onchange="onChangeUserRole(event)" id="defaultSelect" name="user_type_id" class="form-select" required>
                           <option value="2">Photographer</option>
                           <option value="3">Customer</option>
                         </select>
+
+                        <!-- <select id="defaultSelect" name="user_type_id" class="form-select" required>
+                          <option value="2">Photographer</option>
+                          <option value="3">Customer</option>
+                        </select> -->
+                      </div>
+
+                      <div class="col-12" id="category_list">
+                        <label for="category_select" class="form-label">Select Role</label>
+
+
+                        <select id="category_select" name="category_id" class="form-select">
+
+                        <?php
+$sql1 = mysqli_query($con, "SELECT * from categories WHERE active = 1");
+
+while ($row1 = mysqli_fetch_array($sql1)) {
+
+    $category_id = $row1['id'];
+    $category_name = $row1['category'];
+
+    ?>
+
+                          <option value="<?php echo $category_id ?>"><?php echo $category_name ?></option>
+
+                          <?php
+}?>
+                        </select>
+                      </div>
+
+
+                       <div class="col-12" id="photo_image">
+                        <label for="picture" class="form-label"
+                          >Picture</label
+                        >
+                        <input
+                          type="file"
+                          name="file"
+                          class="form-control"
+                          id="picture"
+                        />
                       </div>
 
                       <div class="col-12">
@@ -271,17 +330,20 @@ if (isset($_POST['Submit'])) {
 
     <script>
 
-      // const onChangeUserRole = (e) => {
+      const onChangeUserRole = (e) => {
 
-      //   let priceRangeDiv = document.getElementById('price-range')
+        let categoryDiv = document.getElementById('category_list')
+        let photoDiv = document.getElementById('photo_image')
 
-      //   if(e.target.value == 3){
-      //     priceRangeDiv.style.display = 'none'
-      //   } else {
-      //     priceRangeDiv.style.display = 'block'
+        if(e.target.value == 3){
+          categoryDiv.style.display = 'none'
+          photoDiv.style.display = 'none'
+        } else {
+          categoryDiv.style.display = 'block'
+          photoDiv.style.display = 'block'
 
-      //   }
-      // }
+        }
+      }
 
     </script>
   </body>

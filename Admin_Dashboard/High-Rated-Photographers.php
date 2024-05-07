@@ -3,9 +3,10 @@ session_start();
 
 include "../Connect.php";
 
-$P_ID = $_SESSION['P_Log'];
+$A_ID = $_SESSION['A_Log'];
+$isReport = $_GET['isReport'];
 
-if (!$P_ID) {
+if (!$A_ID) {
 
     echo '<script language="JavaScript">
      document.location="../Login.php";
@@ -13,40 +14,15 @@ if (!$P_ID) {
 
 } else {
 
-    $sql1 = mysqli_query($con, "select * from users where id='$P_ID'");
+    $sql1 = mysqli_query($con, "select * from users where id='$A_ID'");
     $row1 = mysqli_fetch_array($sql1);
 
     $name = $row1['name'];
     $email = $row1['email'];
-    $phone = $row1['phone'];
-    $image = $row1['image'];
-
-    if (isset($_POST['Submit'])) {
-
-        $category_id = $_POST['category_id'];
-        $photographer_id = $_POST['photographer_id'];
-        $accessorie = $_POST['accessorie'];
-
-        $stmt = $con->prepare("INSERT INTO photographer_accessories (category_id, photographer_id, accessorie) VALUES (?, ?, ?) ");
-
-        $stmt->bind_param("iis", $category_id, $photographer_id, $accessorie);
-
-        if ($stmt->execute()) {
-
-            echo "<script language='JavaScript'>
-                alert ('Accessorie Has Been Updated Successfully !');
-           </script>";
-
-            echo "<script language='JavaScript'>
-          document.location='./Accessories.php';
-             </script>";
-
-        }
-    }
-
 }
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +30,7 @@ if (!$P_ID) {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Accessories - FrameMe</title>
+    <title>Photographers - FrameMe</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 
@@ -92,7 +68,7 @@ if (!$P_ID) {
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top d-flex align-items-center">
       <div class="d-flex align-items-center justify-content-between">
-        <a href="index.html" class="logo d-flex align-items-center">
+        <a href="index.php" class="logo d-flex align-items-center">
           <img src="../assets/img/logo_1.png" alt="" />
 
         </a>
@@ -146,140 +122,94 @@ if (!$P_ID) {
 
     <main id="main" class="main">
       <div class="pagetitle">
-        <h1>Accessories</h1>
+        <h1>Photographers</h1>
         <nav>
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item">Accessories</li>
+            <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+            <li class="breadcrumb-item">Photographers</li>
           </ol>
         </nav>
       </div>
       <!-- End Page Title -->
       <section class="section">
-      <div class="mb-3">
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#verticalycentered"
-          >
-            Add New Accessory
-          </button>
-        </div>
 
-        <div class="modal fade" id="verticalycentered" tabindex="-1">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Accessory Information</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
+      <?php if($isReport){?>
+      
+        <div class="mb-3">
 
-                <form method="POST" action="./Accessories.php" enctype="multipart/form-data">
-
-                <input type="hidden" name="photographer_id" value="<?php echo $P_ID ?>" class="form-control" />
-
-                  <div class="row mb-3">
-                    <label for="inputText" class="col-sm-4 col-form-label"
-                      >Category Name</label
-                    >
-                    <div class="col-sm-8">
+<input type="button" value="PRINT REPORT" class="btn btn-primary" onclick="printDiv()">
+</div>
+      
+      
+        <?php }?>
 
 
-                      <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example" name="category_id" required>
-                          <option selected>Open this select Category</option>
-
-                          <?php
-$sql1 = mysqli_query($con, "SELECT * from categories WHERE active = 1");
-
-while ($row1 = mysqli_fetch_array($sql1)) {
-
-    $category_id = $row1['id'];
-    $category = $row1['category'];
-    ?>
-                          <option value="<?php echo $category_id ?>"><?php echo $category ?></option>
-
-<?php
-}?>
-                        </select>
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="inputText" class="col-sm-4 col-form-label"
-                      > Accessorie</label
-                    >
-                    <div class="col-sm-8">
-                      <input type="accessorie" name="accessorie" class="form-control" required/>
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <div class="text-end">
-                      <button type="submit" name="Submit" class="btn btn-primary">
-                        Submit Form
-                      </button>
-                    </div>
-                  </div>
-                </form>
-
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
+      <div class="row" id="div_print">
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
+                <!-- Table with stripped rows -->
 
-                              <!-- Table with stripped rows -->
-                              <table class="table datatable">
+                <table class="table datatable">
+
+
                   <thead>
                     <tr>
                       <th scope="col">ID</th>
-                      <th scope="col">Accessory</th>
-                      <th scope="col">Category</th>
+                      <th scope="col">Photographer Name</th>
+                      <th scope="col">Photographer Email</th>
+                      <th scope="col">Photographer Phone</th>
+                      <th scope="col">Total Rate</th>
                       <th scope="col">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
 <?php
-$sql1 = mysqli_query($con, "SELECT * from photographer_accessories WHERE photographer_id = '$P_ID' ORDER BY id DESC");
+$sql1 = mysqli_query($con, "SELECT * from users WHERE user_type_id = 2 AND total_rate >= 3 ORDER BY id DESC");
 
 while ($row1 = mysqli_fetch_array($sql1)) {
 
-    $accessory_id = $row1['id'];
-    $category_id = $row1['category_id'];
-    $accessorie = $row1['accessorie'];
-
-    $sql2 = mysqli_query($con, "SELECT * from categories WHERE id = '$category_id'");
-    $row2 = mysqli_fetch_array($sql2);
-
-    $category_name = $row2['category'];
+    $photographer_id = $row1['id'];
+    $photographer_name = $row1['name'];
+    $photographer_email = $row1['email'];
+    $photographer_phone = $row1['phone'];
+    $request_status = $row1['request_status'];
+    $total_rate = $row1['total_rate'];
+    $active = $row1['active'];
 
     ?>
                     <tr>
-                      <th scope="row"><?php echo $accessory_id ?></th>
-                      <th scope="row"><?php echo $accessorie ?></th>
-                      <td><?php echo $category_name ?></td>
+                      <th scope="row"><?php echo $photographer_id ?></th>
+                      <td><?php echo $photographer_name ?></td>
+                      <td><?php echo $photographer_email ?></td>
+                      <td><?php echo $photographer_phone ?></td>
+                      <td><?php echo $total_rate ?></td>
+
+
+
                       <td>
-                        <a href="./DeletePicture.php?accessory_id=<?php echo $accessory_id ?>" class="btn btn-danger">Delete</a>
+
+                      <?php if ($request_status == 'Pending') {?>
+
+
+                        <a href="./ViewPhotographer.php?photographer_id=<?php echo $photographer_id ?>" class="btn btn-success">View</a>
+                        <a href="./AcceptOrRejectPhotographer.php?photographer_id=<?php echo $photographer_id ?>&&status=Accepted" class="btn btn-primary">Accept</a>
+                        <a href="./AcceptOrRejectPhotographer.php?photographer_id=<?php echo $photographer_id ?>&&status=Rejected" class="btn btn-danger">Reject</a>
+
+                     <?php } else {?>
+                      <?php if ($active == 1) {?>
+
+<a href="./DeleteOrRestoreUser.php?user_id=<?php echo $photographer_id ?>&&isActive=<?php echo 0 ?>" class="btn btn-danger">Delete</a>
+
+<?php } else {?>
+
+  <a href="./DeleteOrRestoreUser.php?user_id=<?php echo $photographer_id ?>&&isActive=<?php echo 1 ?>" class="btn btn-primary">Restore</a>
+
+<?php }?>
+
+                     <?php }?>
+
+
                       </td>
 
                     </tr>
@@ -288,7 +218,6 @@ while ($row1 = mysqli_fetch_array($sql1)) {
                   </tbody>
                 </table>
                 <!-- End Table with stripped rows -->
-
               </div>
             </div>
           </div>
@@ -327,6 +256,21 @@ while ($row1 = mysqli_fetch_array($sql1)) {
     <script src="../assets/vendor/simple-datatables/simple-datatables.js"></script>
     <script src="../assets/vendor/tinymce/tinymce.min.js"></script>
     <script src="../assets/vendor/php-email-form/validate.js"></script>
+
+    <?php if($isReport){?>
+      <script>
+        function printDiv() {
+            var divContents = document.getElementById("div_print").innerHTML;
+            var a = window.open('', '', 'height=1000, width=5000');
+            a.document.write('<html>');
+            a.document.write('<body >');
+            a.document.write(divContents);
+            a.document.write('</body></html>');
+            a.document.close();
+            a.print();
+        }
+    </script>
+    <?php }?>
 
     <!-- Template Main JS File -->
     <script src="../assets/js/main.js"></script>
