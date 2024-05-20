@@ -4,6 +4,7 @@ session_start();
 include "../Connect.php";
 
 $A_ID = $_SESSION['A_Log'];
+$isReport = $_GET['isReport'];
 
 if (!$A_ID) {
 
@@ -11,7 +12,15 @@ if (!$A_ID) {
      document.location="../Login.php";
     </script>';
 
+} else {
+
+    $sql1 = mysqli_query($con, "select * from users where id='$A_ID'");
+    $row1 = mysqli_fetch_array($sql1);
+
+    $name = $row1['name'];
+    $email = $row1['email'];
 }
+
 ?>
 
 
@@ -21,7 +30,7 @@ if (!$A_ID) {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>Reservations - FrameMe</title>
+    <title>Subscriptions - FrameMe</title>
     <meta content="" name="description" />
     <meta content="" name="keywords" />
 
@@ -80,8 +89,25 @@ if (!$A_ID) {
                 alt="Profile"
                 class="rounded-circle"
               />
-              <span class="d-none d-md-block ps-2"><?php echo $name ?></span> </a
-            ><!-- End Profile Iamge Icon -->
+              <span class="d-none d-md-block dropdown-toggle ps-2"><?php echo $name ?></span> </a
+            >
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6><?php echo $name ?></h6>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="./Logout.php">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul>
           </li>
           <!-- End Profile Nav -->
         </ul>
@@ -96,41 +122,83 @@ if (!$A_ID) {
 
     <main id="main" class="main">
       <div class="pagetitle">
-        <h1>Reservations</h1>
+        <h1>Subscriptions</h1>
         <nav>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-            <li class="breadcrumb-item">Reservations</li>
+            <li class="breadcrumb-item">Subscriptions</li>
           </ol>
         </nav>
       </div>
       <!-- End Page Title -->
       <section class="section">
 
+      <?php if($isReport){?>
+      
+        <div class="mb-3">
+
+<input type="button" value="PRINT REPORT" class="btn btn-primary" onclick="printDiv()">
+</div>
+      
+      
+        <?php }?>
 
 
-
-
-        <div class="row">
+      <div class="row" id="div_print">
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
                 <!-- Table with stripped rows -->
-                <table class="table ">
+
+                <table class="table datatable">
+
+
                   <thead>
                     <tr>
-                      <th scope="col">Customers</th>
-                      <th scope="col">Photographers</th>
-                      <th scope="col">Reservations</th>
+                      <th scope="col">ID</th>
+                      <th scope="col">Photographer Name</th>
+                      <th scope="col">Subcscription Type</th>
+                      <th scope="col">Start Date</th>
+                      <th scope="col">End Date</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Created At</th>
                     </tr>
                   </thead>
                   <tbody>
+<?php
+$sql1 = mysqli_query($con, "SELECT * from photographer_subscriptions ORDER BY id DESC");
 
+while ($row1 = mysqli_fetch_array($sql1)) {
+
+    $subcscription_id = $row1['id'];
+    $photographer_id = $row1['photographer_id'];
+    $subscription_type = $row1['subscription_type'];
+    $start_date = $row1['start_date'];
+    $end_date = $row1['end_date'];
+    $created_at = $row1['created_at'];
+    $price = $row1['price'];
+
+    $sql2 = mysqli_query($con, "SELECT * from users WHERE id = '$photographer_id'");
+    $row2 = mysqli_fetch_array($sql2);
+
+    $photographer_name = $row2['name'];
+
+
+    ?>
                     <tr>
-                      <td><a href="./Customers.php?isReport=true" class="btn btn-primary">Get Report</a> </td>
-                      <td><a href="./Photographers.php?isReport=true" class="btn btn-success">Get Report</a> </td>
-                      <td><a href="./Reservations.php?isReport=true" class="btn btn-primary">Get Report</a> </td>
+                      <th scope="row"><?php echo $subcscription_id ?></th>
+                      <td><?php echo $photographer_name ?></td>
+                      <td><?php echo $subscription_type ?></td>
+                      <td><?php echo $start_date ?></td>
+                      <td><?php echo $end_date ?></td>
+                      <td><?php echo $price ?> JDs</td>
+                      <td><?php echo $created_at ?></td>
+
+
+
                     </tr>
+<?php
+}?>
                   </tbody>
                 </table>
                 <!-- End Table with stripped rows -->
@@ -159,7 +227,7 @@ if (!$A_ID) {
 
     <script>
     window.addEventListener('DOMContentLoaded', (event) => {
-     document.querySelector('#sidebar-nav .nav-item:nth-child(8) .nav-link').classList.remove('collapsed')
+     document.querySelector('#sidebar-nav .nav-item:nth-child(4) .nav-link').classList.remove('collapsed')
    });
 </script>
 
@@ -173,8 +241,22 @@ if (!$A_ID) {
     <script src="../assets/vendor/tinymce/tinymce.min.js"></script>
     <script src="../assets/vendor/php-email-form/validate.js"></script>
 
+    <?php if($isReport){?>
+      <script>
+        function printDiv() {
+            var divContents = document.getElementById("div_print").innerHTML;
+            var a = window.open('', '', 'height=1000, width=5000');
+            a.document.write('<html>');
+            a.document.write('<body >');
+            a.document.write(divContents);
+            a.document.write('</body></html>');
+            a.document.close();
+            a.print();
+        }
+    </script>
+    <?php }?>
+
     <!-- Template Main JS File -->
     <script src="../assets/js/main.js"></script>
-
   </body>
 </html>

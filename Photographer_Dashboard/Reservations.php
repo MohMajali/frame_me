@@ -281,16 +281,13 @@ while ($row1 = mysqli_fetch_array($sql1)) {
                       <?php
 if ($status == 'Pending') {
         ?>
-                      <a href="./AcceptOrRejectRes.php?reservation_id=<?php echo $reservation_id ?>&status=Accepted" class="btn btn-primary">Accept</a>
-                      <a href="./AcceptOrRejectRes.php?reservation_id=<?php echo $reservation_id ?>&status=Rejected" class="btn btn-danger">Reject</a>
-<?php
-} else {?>
-
-<?php if (!$total_price && $status == 'Accepted') {?>
 
 
 
-  <div class="mb-3">
+
+
+                      <?php if (!$total_price) {?>
+                      <div class="mb-3">
           <button
           id="btn-<?php echo $reservation_id ?>"
             type="button"
@@ -303,9 +300,17 @@ if ($status == 'Pending') {
           </button>
         </div>
 
-<?php }?>
+        <?php } else {?>
+
+<a href="./AcceptOrRejectRes.php?reservation_id=<?php echo $reservation_id ?>&status=Accepted" class="btn btn-primary">Accept</a>
+                      <a href="./AcceptOrRejectRes.php?reservation_id=<?php echo $reservation_id ?>&status=Rejected" class="btn btn-danger">Reject</a>
+
+
+       <?php }?>
+
 <?php
 }?>
+
                     </td>
 
 

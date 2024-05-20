@@ -114,13 +114,16 @@ if ($C_ID) {
     </header>
     <!-- END head -->
 
-    <section class="site-hero overlay" style="">
+    <section class="site-hero overlay">
       <div class="container">
         <div class="row site-hero-inner justify-content-center align-items-center">
           <div class="col-md-10 text-center">
             <h1 class="heading" data-aos="fade-up">Welcome to <em>Frame</em>Me</h1>
             <p class="sub-heading mb-5" data-aos="fade-up" data-aos-delay="100">Capture your moments.</p>
-            <!-- <p data-aos="fade-up" data-aos-delay="100"><a href="#" class="btn uppercase btn-primary mr-md-2 mr-0 mb-3 d-sm-inline d-block">Explore The Beauty</a> <a href="#" class="btn uppercase btn-outline-light d-sm-inline d-block">Download</a></p> -->
+
+            <?php if ($C_ID) {?>
+            <p class="sub-heading mb-5" data-aos="fade-up" data-aos-delay="100">Hello <?php echo $name ?>, How Are You Today?</p>
+              <?php }?>
           </div>
         </div>
         <!-- <a href="#" class="scroll-down">Scroll Down</a> -->
@@ -234,7 +237,7 @@ while ($row1 = mysqli_fetch_array($sql1)) {
 
     // if ($active_photographer == 1 && $request_status == 'Accepted') {
 
-        ?>
+    ?>
 
               <div id="img-<?php echo $photo_id ?>" class="slider-item">
                 <img src="../Photographer_Dashboard/<?php echo $photo ?>" alt="Image placeholder" class="img-fluid">

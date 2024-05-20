@@ -12,10 +12,38 @@ if (isset($_POST['Submit'])) {
     $image = 'Photographer_Images/default_user.jpg';
     $userTypeId = $_POST['user_type_id'];
     $category_id = $_POST['category_id'];
-    $photo = $_FILES["file"]["name"];
-    $photo = 'Photographer_Images/' . $photo;
     $price_range = "0.00";
     $total_rate = 0;
+
+    $subscription_type = $_POST['subscription_type'];
+    $start_date = $_POST['start_date'];
+    $end_date = "";
+    $price = "";
+    $payment_type = "CASH";
+
+    $start_timestamp = strtotime("$start_date");
+    $end_timestamp = strtotime("$end_date");
+
+    if ($subscription_type == 1) {
+
+        $end_date = date('d-m-Y', strtotime($start_date . ' +30 days'));
+        $price = 50;
+
+    } else if ($subscription_type == 2) {
+
+        $end_date = date('d-m-Y', strtotime($start_date . ' +60 days'));
+        $price = 90;
+
+    } else if ($subscription_type == 3) {
+
+        $end_date = date('d-m-Y', strtotime($start_date . ' +90 days'));
+        $price = 130;
+
+    } else if ($subscription_type == 6) {
+
+        $end_date = date('d-m-Y', strtotime($start_date . ' +180 days'));
+        $price = 250;
+    }
 
     $stmt = $con->prepare("SELECT id FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
@@ -25,12 +53,12 @@ if (isset($_POST['Submit'])) {
     if ($stmt->num_rows > 0) {
 
         echo '<script language="JavaScript">
-      alert ("Sorry, User Already Exist !")
-        </script>';
+        alert ("Sorry, User Already Exist !")
+          </script>';
 
         echo '<script language="JavaScript">
-      document.location="./Login.php";
-      </script>';
+        document.location="./Login.php";
+        </script>';
 
     } else {
         $stmt = $con->prepare("INSERT INTO users (name, email, password, phone, image, user_type_id, total_rate, price_range) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ");
@@ -48,24 +76,74 @@ if (isset($_POST['Submit'])) {
 
                 if ($stmt->num_rows > 0) {
 
-                    $stmt->bind_result($id);
+                    $stmt->bind_result($photographerid);
                     $stmt->fetch();
 
-                    $stmt = $con->prepare("INSERT INTO photographer_pictures (category_id, photographer_id, image) VALUES (?, ?, ?) ");
 
-                    $stmt->bind_param("iis", $category_id, $id, $photo);
 
-                    if ($stmt->execute()) {
 
-                        move_uploaded_file($_FILES["file"]["tmp_name"], "./Photographer_Dashboard/Photographer_Images/" . $_FILES["file"]["name"]);
+                    $isLoopDone = false;
 
-                        echo "<script language='JavaScript'>
-              alert ('Registration Success, Please Wait for Admin Response !');
-         </script>";
 
-                        echo "<script language='JavaScript'>
-        document.location='./Login.php';
-           </script>";
+                    foreach($category_id as $key => $categoryId){
+
+                      $photo = $_FILES["file-" . $categoryId]["name"];
+                      $photo = 'Photographer_Images/' . $photo;
+
+                      $stmt = $con->prepare("INSERT INTO photographer_pictures (category_id, photographer_id, image) VALUES (?, ?, ?) ");
+
+                      $stmt->bind_param("iis", $categoryId, $photographerid, $photo);
+
+
+                      $stmt->execute();
+
+                      move_uploaded_file($_FILES["file-" . $categoryId]["tmp_name"], "./Photographer_Dashboard/Photographer_Images/" . $_FILES["file-" . $categoryId]["name"]);
+
+
+                      $photographerCategoryStmt = $con->prepare("INSERT INTO phorographer_categories (photographer_id, category_id) VALUES (?, ?) ");
+
+                      $photographerCategoryStmt->bind_param("ii", $photographerid, $categoryId);
+
+
+                      $photographerCategoryStmt->execute();
+
+
+                    }
+
+
+                    $isLoopDone = true;
+
+
+                    if ($isLoopDone) {
+
+                        $stmt2 = $con->prepare("SELECT id FROM users WHERE email = ?");
+                        $stmt2->bind_param("s", $email);
+                        $stmt2->execute();
+                        $stmt2->store_result();
+
+                        if ($stmt2->num_rows > 0) {
+
+                            $stmt2->bind_result($id);
+                            $stmt2->fetch();
+
+                            $stmt = $con->prepare("INSERT INTO photographer_subscriptions (photographer_id, subscription_type, start_date, end_date, payment_type, price)
+                      VALUES (?, ?, ?, ?, ?, ?) ");
+
+                            $stmt->bind_param("issssi", $id, $subscription_type, $start_date, $end_date, $payment_type, $price);
+
+                            if ($stmt->execute()) {
+
+                                echo "<script language='JavaScript'>
+                        alert ('Registration Success, Please Wait for Admin Response !');
+                   </script>";
+
+                                echo "<script language='JavaScript'>
+                  document.location='./Login.php';
+                     </script>";
+
+                            }
+
+                        }
 
                     }
 
@@ -73,12 +151,12 @@ if (isset($_POST['Submit'])) {
             } else {
 
                 echo "<script language='JavaScript'>
-              alert ('Registration Success, You Can Login Now !');
-         </script>";
+                alert ('Registration Success, You Can Login Now !');
+           </script>";
 
                 echo "<script language='JavaScript'>
-        document.location='./Login.php';
-           </script>";
+          document.location='./Login.php';
+             </script>";
             }
 
         }
@@ -137,7 +215,7 @@ if (isset($_POST['Submit'])) {
           <div class="container">
             <div class="row justify-content-center">
               <div
-                class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center"
+                class="col-lg-8 col-md-8 d-flex flex-column align-items-center justify-content-center"
               >
                 <div class="d-flex justify-content-center py-4">
                   <a
@@ -162,7 +240,10 @@ if (isset($_POST['Submit'])) {
                     </div>
 
                     <form class="row g-3 needs-validation" method="POSt" action="./Register.php" enctype="multipart/form-data">
-                      <div class="col-12">
+
+
+
+                      <div class="col-md-6">
                         <label for="yourName" class="form-label"
                           >Your Name</label
                         >
@@ -178,7 +259,7 @@ if (isset($_POST['Submit'])) {
                         </div>
                       </div>
 
-                      <div class="col-12">
+                      <div class="col-md-6">
                         <label for="yourEmail" class="form-label"
                           >Your Email</label
                         >
@@ -194,7 +275,7 @@ if (isset($_POST['Submit'])) {
                         </div>
                       </div>
 
-                      <div class="col-12">
+                      <div class="col-md-6">
                         <label for="yourPhone" class="form-label"
                           >Phone Number</label
                         >
@@ -212,7 +293,7 @@ if (isset($_POST['Submit'])) {
                         </div>
                       </div>
 
-                      <div class="col-12">
+                      <div class="col-md-6">
                         <label for="yourPassword" class="form-label"
                           >Password</label
                         >
@@ -237,48 +318,86 @@ if (isset($_POST['Submit'])) {
                           <option value="2">Photographer</option>
                           <option value="3">Customer</option>
                         </select>
-
-                        <!-- <select id="defaultSelect" name="user_type_id" class="form-select" required>
-                          <option value="2">Photographer</option>
-                          <option value="3">Customer</option>
-                        </select> -->
                       </div>
 
-                      <div class="col-12" id="category_list">
-                        <label for="category_select" class="form-label">Select Role</label>
 
 
-                        <select id="category_select" name="category_id" class="form-select">
 
-                        <?php
+
+
+                      <div class="col-12" id="subscription_type">
+                        <label for="defaultSelect" class="form-label">Subcription</label>
+                        <select id="defaultSelect" name="subscription_type" class="form-select">
+                          <!-- 1 Month -->
+                          <option value="1">1 Month (50 JDs)</option>
+                           <!--2 Months  -->
+                          <option value="2">2 Months (90 JDs)</option>
+                          <!-- 3 Months -->
+                          <option value="3">3 Months (130 JDs)</option>
+                          <!-- 6 Months -->
+                          <option value="6">6 Months (250 JDs)</option>
+                        </select>
+                      </div>
+
+
+
+                      <div class="col-12" id="start_date">
+                        <label for="picture" class="form-label"
+                          >Start Date</label
+                        >
+                        <input
+                          type="date"
+                          name="start_date"
+                          class="form-control"
+                          id="picture"
+                        />
+                      </div>
+
+<div id="category_list">
+
+                      <?php
 $sql1 = mysqli_query($con, "SELECT * from categories WHERE active = 1");
 
 while ($row1 = mysqli_fetch_array($sql1)) {
 
     $category_id = $row1['id'];
-    $category_name = $row1['category'];
+    $category = $row1['category'];
 
     ?>
+                      <div class="col-12" >
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        name="category_id[]"
+                        type="checkbox"
+                        value="<?php echo $category_id ?>"
+                        id="gridCheck"
+                        onclick="categoryChecked(event)"
+                      />
+                      <label class="form-check-label" for="gridCheck">
+                        <?php echo $category ?>
+                      </label>
+                    </div>
+                  </div>
 
-                          <option value="<?php echo $category_id ?>"><?php echo $category_name ?></option>
 
-                          <?php
-}?>
-                        </select>
-                      </div>
-
-
-                       <div class="col-12" id="photo_image">
+                  <div class="col-12" style="display: none;" id="photo_image-<?php echo $category_id ?>">
                         <label for="picture" class="form-label"
                           >Picture</label
                         >
                         <input
                           type="file"
-                          name="file"
+                          name="file-<?php echo $category_id ?>"
                           class="form-control"
                           id="picture"
                         />
                       </div>
+
+<?php
+}?>
+</div>
+
+
 
                       <div class="col-12">
                         <button
@@ -330,17 +449,47 @@ while ($row1 = mysqli_fetch_array($sql1)) {
 
     <script>
 
+
+      const categoryChecked = (e) => {
+
+        let photoDiv = document.getElementById(`photo_image-${e.target.value}`)
+
+        if(e.target.checked){
+
+          photoDiv.style.display = 'block'
+
+        } else {
+
+          photoDiv.style.display = 'none'
+
+        }
+      }
+
+
+
+
+
+
       const onChangeUserRole = (e) => {
 
         let categoryDiv = document.getElementById('category_list')
         let photoDiv = document.getElementById('photo_image')
+        let subscription_type = document.getElementById('subscription_type')
+        let start_date = document.getElementById('start_date')
+        let end_date = document.getElementById('end_date')
 
         if(e.target.value == 3){
           categoryDiv.style.display = 'none'
           photoDiv.style.display = 'none'
+          subscription_type.style.display = 'none'
+          start_date.style.display = 'none'
+          end_date.style.display = 'none'
         } else {
           categoryDiv.style.display = 'block'
           photoDiv.style.display = 'block'
+          subscription_type.style.display = 'block'
+          start_date.style.display = 'block'
+          end_date.style.display = 'block'
 
         }
       }

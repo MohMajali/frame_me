@@ -218,13 +218,19 @@ if ($C_ID) {
 
                             <select onchange="onChangeCategory(event)" name="category_id" id="category" class="form-control">
                             <?php
-$sql1 = mysqli_query($con, "SELECT * from categories WHERE active = 1 ORDER BY id DESC");
+$sql1 = mysqli_query($con, "SELECT category_id from phorographer_categories");
 
 while ($row1 = mysqli_fetch_array($sql1)) {
 
-    $category_id = $row1['id'];
-    $category = $row1['category'];
-    $category_image = $row1['image'];
+    $category_id = $row1['category_id'];
+
+
+    $sql2 = mysqli_query($con, "SELECT * from categories WHERE id = '$category_id'");
+    $row2 = mysqli_fetch_array($sql2);
+
+    $category = $row2['category'];
+    $category_image = $row2['image'];
+
 
     ?>
                                 <option value="<?php echo $category_id ?>"><?php echo $category ?></option>

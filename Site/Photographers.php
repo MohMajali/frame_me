@@ -80,7 +80,7 @@ if ($C_ID) {
 
                         <?php if ($C_ID) {?>
                         <li><a href="./logout.php">Logout</a></li>
-                        
+
                         <?php }?>
                       </ul>
                     </div>
@@ -139,26 +139,23 @@ if ($C_ID) {
         </div>
         <div class="row">
         <?php
-$sql1 = mysqli_query($con, "SELECT * from users WHERE user_type_id = 2 AND active = 1 AND request_status = 'Accepted' ORDER BY id DESC");
 
-while ($row1 = mysqli_fetch_array($sql1)) {
+if (!$category_id) {
 
-    $photographer_id = $row1['id'];
-    $name = $row1['name'];
-    $image = $row1['image'];
+    $sql1 = mysqli_query($con, "SELECT * from users WHERE user_type_id = 2 AND active = 1 AND request_status = 'Accepted' ORDER BY id DESC");
 
-    ?>
+    while ($row1 = mysqli_fetch_array($sql1)) {
+
+        $photographer_id = $row1['id'];
+        $name = $row1['name'];
+        $image = $row1['image'];
+
+        ?>
           <div class="col-lg-4 col-md-6 col-sm-6 col-12 post" data-aos="fade-up" data-aos-delay="100">
             <div class="media media-custom d-block mb-4">
-              <a href="<?php
-if ($category_id) {
+              <a href= "./Photographer.php?photographer_id=" . $photographer_id;
 
-        echo "./Photographer.php?photographer_id=" . $photographer_id . "category_id=" . $category_id;
-    } else {
-        echo "./Photographer.php?photographer_id=" . $photographer_id;
-    }
-
-    ?>" class="mb-4 d-block"><img src="../Photographer_Dashboard/<?php echo $image ?>" alt="Image placeholder" class="img-fluid"></a>
+         class="mb-4 d-block"><img src="../Photographer_Dashboard/<?php echo $image ?>" alt="Image placeholder" class="img-fluid"></a>
               <div class="media-body">
                 <!-- <span class="meta-post">February 26, 2018</span> -->
                 <h2 class="mt-0 mb-3"><a href="#"><?php echo $name ?></a></h2>
@@ -166,7 +163,51 @@ if ($category_id) {
             </div>
           </div>
           <?php
-}?>
+}
+} else {?>
+
+
+
+<?php
+$sql1 = mysqli_query($con, "SELECT photographer_id from phorographer_categories WHERE category_id = '$category_id'");
+
+    while ($row1 = mysqli_fetch_array($sql1)) {
+
+        $photographer_id = $row1['photographer_id'];
+
+        $sql2 = mysqli_query($con, "SELECT * from users WHERE id = '$photographer_id'");
+        $row2 = mysqli_fetch_array($sql2);
+
+        $photographer_id = $row2['id'];
+        $name = $row2['name'];
+        $image = $row2['image'];
+        $active = $row2['active'];
+        $request_status = $row2['request_status'];
+
+        ?>
+
+
+
+<?php if ($active == 1 && $request_status == 'Accepted') {?>
+
+<div class="col-lg-4 col-md-6 col-sm-6 col-12 post" data-aos="fade-up" data-aos-delay="100">
+            <div class="media media-custom d-block mb-4">
+              <a href= "./Photographer.php?photographer_id=<?php echo $photographer_id ?>";
+
+         class="mb-4 d-block"><img src="../Photographer_Dashboard/<?php echo $image ?>" alt="Image placeholder" class="img-fluid"></a>
+              <div class="media-body">
+                <!-- <span class="meta-post">February 26, 2018</span> -->
+                <h2 class="mt-0 mb-3"><a href="#"><?php echo $name ?></a></h2>
+              </div>
+            </div>
+          </div>
+
+
+
+
+<?php }
+    }?>
+<?php }?>
         </div>
       </div>
     </section>

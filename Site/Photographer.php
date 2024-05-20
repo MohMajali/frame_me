@@ -24,6 +24,7 @@ $photographer_name = $row1['name'];
 $photographer_email = $row1['email'];
 $photographer_image = $row1['image'];
 $photographer_description = $row1['description'];
+$total_rate = $row1['total_rate'];
 
 ?>
 
@@ -88,7 +89,7 @@ $photographer_description = $row1['description'];
 
                         <?php if ($C_ID) {?>
                         <li><a href="./logout.php">Logout</a></li>
-                        
+
                         <?php }?>
                       </ul>
                     </div>
@@ -142,12 +143,20 @@ $photographer_description = $row1['description'];
 
           <p><?php echo $photographer_description ?></p>
 
+          <?php for ($i = 1; $i < $total_rate; $i++) {?>
+
+            <a role="button" class="star" style="color:#fad00e"><i title="<?php echo $i ?>" class="fa fa-star"></i></a>
+
+            <?php }?>
+
+
+
           <?php if ($C_ID) {?>
            <div class="row">
                 <div class="col-md-6 form-group">
                   <a href="./Make-Reservation.php?photographer_id=<?php echo $photographer_id ?>" class="btn btn-primary">Set Reservation</a>
                 </div>
-              </div> 
+              </div>
           <?php }?>
 
         </div>
@@ -228,6 +237,60 @@ while ($row1 = mysqli_fetch_array($sql1)) {
 
           </div>
           <?php
+}?>
+
+
+        </div>
+      </div>
+    </section>
+
+
+
+    <section class="section testimonial-section">
+      <div class="container">
+        <div class="row justify-content-center text-center mb-5">
+          <div class="col-md-8">
+            <h2 class="heading" data-aos="fade-up">Reviews</h2>
+          </div>
+        </div>
+        <div class="row">
+
+
+        <?php
+$sql1 = mysqli_query($con, "SELECT * from reservations WHERE photographer_id = '$photographer_id'");
+
+while ($row1 = mysqli_fetch_array($sql1)) {
+
+    $reservation_id = $row1['id'];
+    $review = $row1['review'];
+    $customer_id = $row1['customer_id'];
+    $created_at = $row1['created_at'];
+
+    $sql3 = mysqli_query($con, "SELECT * from users WHERE id = '$customer_id'");
+    $row3 = mysqli_fetch_array($sql3);
+
+    $customer_name = $row3['name'];
+
+    ?>
+
+<?php if ($review) {?>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="testimonial text-center">
+              <div class="author-image mb-3">
+                <img src="./img/default_user.jpg" alt="Image placeholder" class="rounded-circle">
+              </div>
+              <blockquote>
+
+                <p>&ldquo;<?php echo $review ?>&rdquo;</p>
+              </blockquote>
+              <p><em>&mdash; <?php echo $customer_name ?></em></p>
+
+            </div>
+          </div>
+
+          <?php
+}?>
+<?php
 }?>
 
 
